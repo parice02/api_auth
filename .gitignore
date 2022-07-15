@@ -4,3 +4,4 @@ env/
 */__pycache__/
 */migrations/
 *.sqlite*
+test.http
