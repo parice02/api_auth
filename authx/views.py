@@ -38,8 +38,8 @@ class UserViewSet(viewsets.ModelViewSet):
             instance.is_superuser = False
             instance.is_active = True
             instance.save()
-        response = SecureUserSerializer(data=instance)
-        return Response(response.data, status=status.HTTP_201_CREATED)
+        response = {"id": instance.id, "username": instance.username}
+        return Response(response, status=status.HTTP_201_CREATED)
 
     def retrieve(self, request, *args, **kwargs):
         user = self.get_object()
@@ -73,11 +73,11 @@ class UserViewSet(viewsets.ModelViewSet):
             status=status.HTTP_200_OK,
         )
 
-    @decorators.action(methods=["GET"], detail=True)
+    @decorators.action(methods=["GET"], detail=False)
     def info(self, request, *args, **kwargs):
         user = self.get_object()
         self.check_object_permissions(request, user)
-        serializer = RestrictedUserSerializer(data=user)
+        serializer = RestrictedUserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     @decorators.action(methods=["GET"], detail=True)
@@ -85,5 +85,5 @@ class UserViewSet(viewsets.ModelViewSet):
         user = self.get_object()
         self.check_object_permissions(request, user)
         user.is_active = True
-        serializer = RestrictedUserSerializer(data=user)
+        serializer = RestrictedUserSerializer(user)
         return Response(serializer.data, status=status.HTTP_200_OK)

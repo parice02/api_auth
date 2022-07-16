@@ -8,7 +8,9 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class CustomUser(AbstractUser):
-    phone = PhoneNumberField("Numéro de téléphone", unique=True, max_length=30)
+    phone = PhoneNumberField(
+        "Numéro de téléphone", unique=True, max_length=30, null=True, blank=True
+    )
     # birthdate = models.DateField("Date de naissance")
     # gender = models.CharField(max_length=10)
     # city = models.CharField(max_length=50)
